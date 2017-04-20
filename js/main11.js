@@ -506,31 +506,31 @@ function feedback() {
 	if(attempt_index === max_attempts - 1) {								//if all the attempts are gone...
 		el('lose').play();												//play sound
 		console.log('player loses');
-		endgame();														//game over.
-		alert('you lose!');												//I'm sorry
-	} else {																//otherwise
+		endgame();					//game over.
+		alert('you lose!');				//I'm sorry
+	} else {						//otherwise
 		
 		//SET UP NEW ATTEMPT
 		
-		attempt_index++;												//add 1 to attempt index
-		xbubble = 0;														//reset current bubble counter
+		attempt_index++;				//add 1 to attempt index
+		xbubble = 0;					//reset current bubble counter
 		console.log('next attempt: ' + (attempt_index + 1));
-		el('row' + attempt_index).style.backgroundColor = 'white'			//highlight next row
-		el('row' + (attempt_index - 1)).style.backgroundColor = '#e1e1e1'	//remove highlight from previous row
+		el('row' + attempt_index).style.backgroundColor = 'white'//highlight next row
+		el('row' + (attempt_index - 1)).style.backgroundColor = '#e1e1e1'//remove highlight from previous row
 		
-		for (i = 0 ; i < code_length; i++) {   							//set up the new row
+		for (i = 0 ; i < code_length; i++) {   		//set up the new row
 			cl('bubble' + attempt_index, i).addEventListener('click', assign_color);
 			//by adding the new eventlisteners
 			cl('bubble' + attempt_index, i).addEventListener('drop', drop);
 			cl('bubble' + attempt_index, i).addEventListener('dragover', allowDrop);
-			secret_string[i].matched = false;							//set all the secret colors back to unmatched.
-		}																//end for
+			secret_string[i].matched = false;	//set all the secret colors back to unmatched.
+		}						//end for
 		
-		right_pos = [];													//empty all arrays
+		right_pos = [];					//empty all arrays
 		right_col = [];
 		current_string = [];	
-	}																	//end if
-}																		//end function
+	}							//end if
+}								//end function
 
 ////////ENDGAME
 
@@ -538,23 +538,23 @@ function endgame(){
 	
 	//STOP INTERVAL
 
-	clearInterval(timeinterval);										//clear interval
+	clearInterval(timeinterval);				//clear interval
 
 	//REVEAL CODE
 	 
 	for(i = 0; i < code_length; i++) {
-		cl('question', i).src = 'img/' + secret_string[i].color + '.gif'; 	//reveal the code
-	}																	//end for
+		cl('question', i).src = 'img/' + secret_string[i].color + '.gif';//reveal the code
+	}							//end for
 	
 	//SET ENDGAME BOARD
 	
-	el('check').innerHTML = 'Play Again';								//switch to play again button
+	el('check').innerHTML = 'Play Again';			//switch to play again button
 	el('check').removeEventListener('click', checkit);
 	el('check').addEventListener('click', gen_board);
-	document.removeEventListener('keydown', down);						//remove key listener
-	el('settings').style.display = 'block';								//show settings
-	el('howto').style.display = 'none';									//hide how to
-}																		//end function
+	document.removeEventListener('keydown', down);		//remove key listener
+	el('settings').style.display = 'block';			//show settings
+	el('howto').style.display = 'none';			//hide how to
+}								//end function
 
 ////////RESET
 
@@ -562,13 +562,13 @@ function total_reset() {
 	
 	//RESET VARIABLES
 
-	secret_string = [];													//empty all arrays
+	secret_string = [];					//empty all arrays
 	pool = [];
 	right_pos = [];
 	right_col = [];
 	rows = [];
 	bubbles = [];
-	bubblindex = 0;														//reset all global variables
+	bubblindex = 0;						//reset all global variables
 	attempt_index = 0;
 	maxattempts = 7;
 	xbubble = 0;
@@ -576,39 +576,39 @@ function total_reset() {
 	
 	//RESET VISUAL ELEMENTS
 	
-	var clean = el('game');												//remove the previous board
+	var clean = el('game');					//remove the previous board
 	el('info').innerHTML = '';
 	el('highscore').innerHTML = '';
 
-	while(clean.firstChild) {											//total reset of the game DIV from previous matches
+	while(clean.firstChild) {				//total reset of the game DIV from previous matches
 		clean.removeChild(clean.firstChild);
-	}																	//end while
+	}							//end while
 
-	el('settings').style.display = 'none';								//hide settings
-	el('picker').style.backgroundColor = 'gray';							//reset the picker to gray
-	var questz = document.getElementsByClassName('question');				//reset all the secret code bubble to invisible
+	el('settings').style.display = 'none';			//hide settings
+	el('picker').style.backgroundColor = 'gray';		//reset the picker to gray
+	var questz = document.getElementsByClassName('question');//reset all the secret code bubble to invisible
 	
 	for (i = 0; i < questz.length; i++) {
 		questz[i].style.display = 'none';
-	}																	//end for
+	}							//end for
 
-	var colz = document.getElementsByClassName('color');					//reset all the colors to invisible
+	var colz = document.getElementsByClassName('color');	//reset all the colors to invisible
 
 	for (i = 0; i < colz.length; i++) {
 		colz[i].style.display = 'none';
-	}																	//end for
+	}							//end for
  
 	for(i = 0; i < code_length; i++) {
-		cl('question', i).src = 'img/question.gif';						//reset the code bubbles to questions
+		cl('question', i).src = 'img/question.gif';	//reset the code bubbles to questions
 	}
 
 	el('check').removeEventListener('click', gen_board);
-	el('check').innerHTML = 'Check';										//switch to check button
-}																		//end function
+	el('check').innerHTML = 'Check';			//switch to check button
+}								//end function
 
 ////////DRAG AND DROP
 
-function allowDrop(ev) {													//let the elements by dropped over
+function allowDrop(ev) {					//let the elements by dropped over
 	ev.preventDefault();
 }
 	
@@ -616,9 +616,9 @@ function allowDrop(ev) {													//let the elements by dropped over
 	
 function drag(ev) {
 	
-	el('drag').play();													//play a sound
-	pick = ev.target.id;													//read the color id
-	switch(pick) {														//convert each color in its index value 0 - 5
+	el('drag').play();					//play a sound
+	pick = ev.target.id;					//read the color id
+	switch(pick) {						//convert each color in its index value 0 - 5
 		case 'yellow' :
 			pick = 0;
 			break;
@@ -638,7 +638,7 @@ function drag(ev) {
 			pick = 5;
 			break;
 	}
-	ev.dataTransfer.setData('it', pick);									//set pick value to be transfered
+	ev.dataTransfer.setData('it', pick);			//set pick value to be transfered
 }
 	
 	//DROP
@@ -646,11 +646,11 @@ function drag(ev) {
 function drop(ev) {
 	
 	ev.preventDefault();
-	el('select').play();												//play sound
-	var data = ev.dataTransfer.getData('it');								//transfer pick color to destination
-	var num = Number(data);												//convert into numeric
-	ev.target.src = 'img/' + num + '.gif';									//assign the picked color to the object's src
-	ev.target.color = num;												//assign the picked color to the object's "color" value
+	el('select').play();					//play sound
+	var data = ev.dataTransfer.getData('it');		//transfer pick color to destination
+	var num = Number(data);					//convert into numeric
+	ev.target.src = 'img/' + num + '.gif';			//assign the picked color to the object's src
+	ev.target.color = num;					//assign the picked color to the object's "color" value
 
 	console.log('bubble ' + this.number + ' has color ' + this.color);
 }
@@ -659,95 +659,65 @@ function drop(ev) {
 	
 function down(ev){
 	
-	function key_assign(key) {											//assign the color to the bubble throught keyboard
+	function key_assign(key) {				//assign the color to the bubble throught keyboard
 		
-		if(xbubble >= code_length) {										//start from the beginning when reaching the end of the string
+		if(xbubble >= code_length) {			//start from the beginning when reaching the end of the string
 			xbubble = 0;
 		}
 		
-		var thisbubble =  el('bubble' + attempt_index + '_' + xbubble);		//find the current bubble
+		var thisbubble =  el('bubble' + attempt_index + '_' + xbubble);	//find the current bubble
 		
-		thisbubble.src =  'img/' + key + '.gif';							//assign color to the bubble
+		thisbubble.src =  'img/' + key + '.gif';	//assign color to the bubble
 		thisbubble.color = key;
-		xbubble++;														//add 1 to the counter
+		xbubble++;					//add 1 to the counter
 		console.log('bubble ' + thisbubble.number + ' has color ' + thisbubble.color);
 	}
 	
-	var key = ev.keyCode;													//read the key
+	var key = ev.keyCode;					//read the key
 		
-	switch(key){														//enter = check
+	switch(key){						//enter = check
 		case 13:
 			checkit();
 			break;
-		case 27:															//esc = give up
+		case 27:					//esc = give up
 			endgame();
 			break;
 	} 
 	
-	var k;																//set a variable from 1 to 6
+	var k;							//set a variable from 1 to 6
 	
-	if(key > 48 && key < 55) {												//make it match the keyboard and the numlock keys
+	if(key > 48 && key < 55) {				//make it match the keyboard and the numlock keys
 		k = (key - 49);
 	} else if(key > 96 && key < 103) {
 		k = (key - 97);
 	}
 	
-	if(k < num_colors) {													//make sure the color is within range
-		key_assign(k);													//assign the color
-	}																	//end if	
-}																		//end function
+	if(k < num_colors) {					//make sure the color is within range
+		key_assign(k);					//assign the color
+	}							//end if	
+}								//end function
 
 
 	//TIMERUN
 	
 function time_run() {
 
-	if(attempt_index === (max_attempts-1)) {								//if all the attempts are gone...
-            clearInterval(timeinterval);                                    					//stop timer
-			el('lose').play();                                                                                   //play sound
+	if(attempt_index === (max_attempts-1)) {		//if all the attempts are gone...
+            clearInterval(timeinterval);                        //stop timer
+			el('lose').play();                      //play sound
 			console.log('player loses');
-			endgame();													//game over.
-			alert('Time out!');											//I'm sorry
+			endgame();				//game over.
+			alert('Time out!');			//I'm sorry
 	} else {
 		
         var game = el('game');
-        game.removeChild(game.childNodes[0]);                               				//remove a row
-        max_attempts--;                                                     							//remove an attempt
+        game.removeChild(game.childNodes[0]);                   //remove a row
+        max_attempts--;                                         //remove an attempt
         console.log('timerun' );
     }
 }
 
 ////////RUN FUNCTIONS AND LISTENERS
 
-el('go').addEventListener('click', gen_board);							//add the generate board event listener
+el('go').addEventListener('click', gen_board);			//add the generate board event listener
 
-/*
-
-Proudly coded by
-				___  ____ _  _ _ ____ _    ____    _  _    ____ ____ ____ ___ _ ____ ____ _  _ _  
-				|  \ |__| |\ | | |___ |    |___    |  |    [__  |__| |__/  |  | |__/ |__| |\ | |
-				|__/ |  | | \| | |___ |___ |___     \/  .  ___] |  | |  \  |  | |  \ |  | | \| | 
-												 
-							 _   _ ____ _ ___  ____    ____ ____ _  _ ___  ____ 
-							  \_/  |__| |   /  |__|    |    |__| |\/| |__] [__  
-							   |   |  | |  /__ |  |    |___ |  | |  | |    ___] 
-												|  |  |  |					   
-												|  |__|  |
-												| /\   \ |
-												|/  \   \|
-												/    \   \
-											   /      \   \
-											  /   /\   \   \
-				_____________________________/   /  \   \   \_____________________________
-				____________________________/   /    \   \   \____________________________
-				___________________________/   /    / \   \   \___________________________
-										  /   /    2017\   \   \
-										 /   /    /---------'   \
-										/   /    /_______________\
-										\  /                     /
-										 \/_____________________/
-												|  |  |  |
-												|  |  |  |
-												|  |  |  |
-												|  |  |  |
-*/
