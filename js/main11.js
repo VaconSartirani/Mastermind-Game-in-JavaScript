@@ -20,22 +20,22 @@ JAVASCRIPT FILE
 
 	var rows = [];														//total rows
 	var max_attempts;													//number of attempts available
-	var secret_string = [];												//the secret code
-	var current_string = []; 												//the code given by the player
-	var bubblindex = 0; 													//the global index of all the bubbles
-	var bubbles = [];										 				//where those bubbles are
-	var code_length;    													//length of the secret code
-	var num_colors = 6; 													//number of colors to pick from
+	var secret_string = [];										//the secret code
+	var current_string = []; 									//the code given by the player
+	var bubblindex = 0; 											//the global index of all the bubbles
+	var bubbles = [];										 			//where those bubbles are
+	var code_length;    											//length of the secret code
+	var num_colors = 6; 											//number of colors to pick from
 	var pick;   															//the picked color
-	var right_pos = [];													//the right values in the right position
-	var right_col = [];													//the right values in the wrong position
-	var attempt_index = 0;												//counter of the current attempt
-	var unique = false;													//only unique colors?
-	var memory = false;													//memory mode?
-	var timerun = false;													//timerun mode?
+	var right_pos = [];												//the right values in the right position
+	var right_col = [];												//the right values in the wrong position
+	var attempt_index = 0;										//counter of the current attempt
+	var unique = false;												//only unique colors?
+	var memory = false;												//memory mode?
+	var timerun = false;											//timerun mode?
 	var timeinterval;													//timerun interval
 	var pool = [];														//pool from where to pick random UNIQUE numbers
-	var xbubble = 0;														//the current bubble index
+	var xbubble = 0;													//the current bubble index
 	var startzeit;														//start of game
 	var high_score;														//highscore
 	var best_time;														//best time
@@ -43,25 +43,25 @@ JAVASCRIPT FILE
 
 ////////HELPING FUNCTIONS
 
-function el(id) {   														//short for calling id
+function el(id) {   												//short for calling id
 	return document.getElementById(id);
 }
 
-function cl(classname, index) {  											//short for calling class
+function cl(classname, index) {  						//short for calling class
 	return document.getElementsByClassName(classname)[index];
 }
 
-function create(id) {													//short for create element
+function create(id) {												//short for create element
 	return document.createElement(id);
 }
 
-function random(min,max) {												//create random number in the given range
+function random(min,max) {									//create random number in the given range
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min +1)) + min;
 }
 
-function random_u() {													//create random UNIQUE number in the range in the pool
+function random_u() {												//create random UNIQUE number in the range in the pool
 	var uindex = Math.floor(pool.length * Math.random());
 	var drawn = pool.splice(uindex, 1);
 	return drawn[0];
@@ -69,23 +69,23 @@ function random_u() {													//create random UNIQUE number in the range in 
 
 ////////OBJECT
 
-	var object = {   														//the object, this is the basis "coin" of the game. All code values will be different objects
-		secret 	: true, 													//is this part of the secret code or the one given by the player?
-		index  	: 0,    													//the unique position in the code
-		make   	: function(min, max) {  									//create the new object
-			if(this.secret) {  											//create the secret code value, that means:
-				this.color = random(min, max);							//assign a random value and
-				this.matched = false; 									//set the object as not matched yet
-			}															//end if
-		},																//end make
+	var object = {   													//the object, this is the basis "coin" of the game. All code values will be different objects
+		secret 	: true, 												//is this part of the secret code or the one given by the player?
+		index  	: 0,    												//the unique position in the code
+		make   	: function(min, max) {  				//create the new object
+			if(this.secret) {  										//create the secret code value, that means:
+				this.color = random(min, max);			//assign a random value and
+				this.matched = false; 							//set the object as not matched yet
+			}																			//end if
+		},																			//end make
 		
-		make_u  : function() {											//same thing with the random unique
+		make_u  : function() {									//same thing with the random unique
 			if(this.secret) {
 				this.color = random_u();
 				this.matched = false;
-			}															//end if
-		}																//end make_u
-	};																	//end object
+			}																			//end if
+		}																				//end make_u
+	};																				//end object
 
 
 //############# PREPARATORY FUNCTIONS #################
@@ -98,72 +98,72 @@ function gen_board() {
 
 	max_attempts = 7;													//standard n. of attempts
 
-	if(el('custom').checked) {											//check if custom difficulty is on
-		var attnumber = el('inputattempts').value;						//read the number of max attempts
+	if(el('custom').checked) {								//check if custom difficulty is on
+		var attnumber = el('inputattempts').value;//read the number of max attempts
 
-		if(attnumber === 'What is love?') {								//easter egg :)
+		if(attnumber === 'What is love?') {			//easter egg :)
 			alert("Baby don't hurt me, don't hurt me, no more.");
 		} else {
-			max_attempts = attnumber;									//set maximum of attempts/rows
-		}																//end if
-	}																	//end if
+			max_attempts = attnumber;							//set maximum of attempts/rows
+		}																				//end if
+	}																					//end if
 
 	//ENSURE ROW NUMBER IS VALID
 	
 	if (isNaN(max_attempts) || max_attempts == '' || max_attempts > 12 || max_attempts <= 0) { //check if the attempt number is a valid number
 		alert('Please insert a valid number of attempts');
-	} else {																//if everything is alright, let's go.
+	} else {																	//if everything is alright, let's go.
 	
 		//SET UP GAME
 
 		total_reset();
-		document.addEventListener('keydown', down);						//set up key listener
+		document.addEventListener('keydown', down);//set up key listener
 		
 		//READ MODES
 
-		if(el('memory').checked) {										//(re)set memory mode
+		if(el('memory').checked) {								//(re)set memory mode
 			memory = true;
 		} else {
 			memory = false;
-		}																//end if
+		}																				//end if
 		
-		if(el('timerun').checked) {										//(re)set timerun mode
+		if(el('timerun').checked) {							//(re)set timerun mode
 			timerun = true;
 		} else {
 			timerun = false;
-		}																//end if
+		}																				//end if
 
 		//SET CODE LENGTH
 
-		if(el('length0').checked) {										//read the length of the code
-			code_length = 3;												//set it
+		if(el('length0').checked) {							//read the length of the code
+			code_length = 3;											//set it
 		} else {
 			code_length = 4;
-		}																//end if
+		}																				//end if
 
-		for(i = 0; i < code_length; i++) {								//display only as many code bubbles as the code is long
+		for(i = 0; i < code_length; i++) {			//display only as many code bubbles as the code is long
 			el('q' + i).style.display = 'block';
 		}
 
 		//SET UNIQUE
 
-		if(el('same').checked) {											//check if "allow multiple use of same color" is checked
+		if(el('same').checked) {								//check if "allow multiple use of same color" is checked
 			unique = false;												//assign variable accordingly
 		} else {
 			unique = true;
-		}																//end if 
+		}																				//end if 
 
 		//SET COLORS NUMBER
 
-		if(el('col0').checked) {											//check wich radio input is checked
+		if(el('col0').checked) {								//check wich radio input is checked
 			num_colors = 4;												//assign number of colors accordingly
 		} else if (el('col1').checked) {
 			num_colors = 5;
 		} else {
 			num_colors = 6;
-		}																//end if
+		}																				//end if
 
-		for(i = 0; i < num_colors; i++) {								//display only as many colors as requested
+		for(i = 0; i < num_colors; i++) {				//display only as many colors as requested
 			cl('color', i).style.display = 'block';
 		}																//end for
 
@@ -172,89 +172,89 @@ function gen_board() {
 
 		//SET UP CONTAINERS
 
-		for(i = 0; i < max_attempts; i++) {								//generate 1 row per attempt
-			var row = create('div');										//generate 1 row div
-			var attempt = create('div');									//generate 1 attempt div
-			var feedback = create('div');									//generate 1 feedback div
-			var rownum = create('p');										//generate 1 paragraph
+		for(i = 0; i < max_attempts; i++) {			//generate 1 row per attempt
+			var row = create('div');							//generate 1 row div
+			var attempt = create('div');					//generate 1 attempt div
+			var feedback = create('div');					//generate 1 feedback div
+			var rownum = create('p');							//generate 1 paragraph
 
 			//SET UP BUBBLES
 
-			for(j = 0; j < code_length; j++) {  							//generate as many bubbles per row as the code is long
-				var bubble = new Image();									//generate new image object
-				bubble.src = 'img/gray.gif' 								//assign gray pic source
-				bubble.classList.add ('bubble' + i);						//assign row class
-				bubble.classList.add('bubble');							//assign general class
-				bubble.id = 'bubble' + i + '_' + j;							//assign unique global id with row and number
-				bubble.index = bubblindex; 								//assign unique global index
-				bubble.row = i; 											//assign row value
-				bubble.number = j; 										//assign column value
-				bubble.color = undefined; 								//assign no color for now
-				bubbles.push(bubble); 									//add it to the array
-				attempt.appendChild(bubble);							//append it to the attempt div
+			for(j = 0; j < code_length; j++) {  	//generate as many bubbles per row as the code is long
+				var bubble = new Image();						//generate new image object
+				bubble.src = 'img/gray.gif' 				//assign gray pic source
+				bubble.classList.add ('bubble' + i);//assign row class
+				bubble.classList.add('bubble');			//assign general class
+				bubble.id = 'bubble' + i + '_' + j;	//assign unique global id with row and number
+				bubble.index = bubblindex; 					//assign unique global index
+				bubble.row = i; 										//assign row value
+				bubble.number = j; 									//assign column value
+				bubble.color = undefined; 					//assign no color for now
+				bubbles.push(bubble); 							//add it to the array
+				attempt.appendChild(bubble);				//append it to the attempt div
 				bubblindex++; 											//add 1 to global bubble index (counter)
-			}   															//end for
+			}   																	//end for
 
 			//SET UP FEEDS
 
-			for(k = 0; k < code_length; k++) {							//generate as many feeds as the code is long
-				var feed = new Image();									//generate the image
-				feed.src = 'img/feedgray.gif';							//assign the neutral src
-				feed.classList.add('feed');								//assign class
-				feed.classList.add('feed' + i);							//assign row class
-				feed.id = 'feed' + i + '_' + k;								//assign unique id row and number
-				feed.row = i;											//assign row value
-				feed.number = k;											//assign linear value
-				feed.color = undefined; 									//assign no color
-				feedback.appendChild(feed); 								//append to feedback div
-			}															//end for
+			for(k = 0; k < code_length; k++) {		//generate as many feeds as the code is long
+				var feed = new Image();							//generate the image
+				feed.src = 'img/feedgray.gif';			//assign the neutral src
+				feed.classList.add('feed');					//assign class
+				feed.classList.add('feed' + i);			//assign row class
+				feed.id = 'feed' + i + '_' + k;			//assign unique id row and number
+				feed.row = i;												//assign row value
+				feed.number = k;										//assign linear value
+				feed.color = undefined; 						//assign no color
+				feedback.appendChild(feed); 				//append to feedback div
+			}																			//end for
 
 			//SET UP ROW
 
-			row.id = 'row' + i; 											//assign index ID to row Important!
-			row.className = 'row';										//assign class to row
-			attempt.id = 'attempt' + i; 									//assign index ID to attempt
-			attempt.className = 'attempt'; 								//assign class to attempt
-			feedback.id = 'feedback' + i;									//assign index ID to feedback
-			feedback.className = 'feedback'; 								//assign class to feedback
-			rownum.innerHTML = (i + 1);									//write number into paragraph
+			row.id = 'row' + i; 									//assign index ID to row Important!
+			row.className = 'row';								//assign class to row
+			attempt.id = 'attempt' + i; 					//assign index ID to attempt
+			attempt.className = 'attempt'; 				//assign class to attempt
+			feedback.id = 'feedback' + i;					//assign index ID to feedback
+			feedback.className = 'feedback'; 			//assign class to feedback
+			rownum.innerHTML = (i + 1);						//write number into paragraph
 
 			//WRAP UP ROW
 
-			row.appendChild(attempt);									//append the attempt to row
-			row.appendChild(feedback);									//append the feedback to row
-			row.appendChild(rownum);									//append paragraph to row
+			row.appendChild(attempt);							//append the attempt to row
+			row.appendChild(feedback);						//append the feedback to row
+			row.appendChild(rownum);							//append paragraph to row
 			rows.push(row);												//push the row into the rows array
-		}																//end for
+		}																				//end for
 
 		//INJECT ROWS
 
 		for (i = 0; i < max_attempts;  i++) {
-			el('game').appendChild(rows[(max_attempts - 1) - i]);			//append the row to the game (starting from the last one!)
+			el('game').appendChild(rows[(max_attempts - 1) - i]);	//append the row to the game (starting from the last one!)
 		}
 
 		console.log(bubbles);
 
 		//ADD THE EVENTLISTENERS
 
-		for (i = 0 ; i < num_colors; i++) { 								//for every "color picker"
-			cl('color', i).addEventListener('click', pick_color); 		//have it pick the color
+		for (i = 0 ; i < num_colors; i++) { 			//for every "color picker"
+			cl('color', i).addEventListener('click', pick_color); //have it pick the color
 		}
 
-		for (i = 0 ; i < code_length; i++) {								//for every "bubble" of current row
+		for (i = 0 ; i < code_length; i++) {			//for every "bubble" of current row
 			cl('bubble' + attempt_index, i).addEventListener('click', assign_color);	//have it be assigned the picked color
 			cl('bubble' + attempt_index, i).addEventListener('drop', drop);
 			cl('bubble' + attempt_index, i).addEventListener('dragover', allowDrop);
 		}
 
-		el('check').addEventListener('click', checkit);					//check button
-		el('giveup').addEventListener('click', endgame);					//giveup button
-		el('row0').style.backgroundColor = 'white'						//highlight the first row
+		el('check').addEventListener('click', checkit);	//check button
+		el('giveup').addEventListener('click', endgame);//giveup button
+		el('row0').style.backgroundColor = 'white'//highlight the first row
 		
 		//SHOW THE BOARD
 		
-		el('wrapper').style.display = 'block';							//show board
-		el('howto').style.display = 'block';								//hide how to
+		el('wrapper').style.display = 'block';		//show board
+		el('howto').style.display = 'block';			//hide how to
 
 		//RUN THE SECRET CODE
 
@@ -262,13 +262,13 @@ function gen_board() {
 		
 		//START TIMERS
 		
-		if(timerun) {													//if timerun
-			timeinterval =  setInterval(time_run, 10000);					//start counting
+		if(timerun) {															//if timerun
+			timeinterval =  setInterval(time_run, 10000);	//start counting
 		}
 		
-		startzeit = new Date();                                                  				//set up starting time
-	}																	//end if
-}																		//end function
+		startzeit = new Date();                   //set up starting time
+	}																						//end if
+}																							//end function
 
 ////////GENERATE THE SECRET CODE
 
@@ -277,28 +277,28 @@ function gen_secret_string() {
 	//EMPTY PREVIOUS CODE
 	
 	secret_string = [];													//empty the secret string array
-	pool = [];															//empty pool array
+	pool = [];																	//empty pool array
 	
 	//C
 	
-	for(i = 0; i < num_colors; i++) {									//create a pool array from where to take values to generate unique random numbers
+	for(i = 0; i < num_colors; i++) {						//create a pool array from where to take values to generate unique random numbers
 		pool.push(i);
-	}																	//end for
+	}																						//end for
 
-	for(i = 0; i < code_length; i++) {									//creates as many secret values as the code length
-		var secret_value = Object.create(object);							//create it
+	for(i = 0; i < code_length; i++) {					//creates as many secret values as the code length
+		var secret_value = Object.create(object);	//create it
 
-		if(unique === false) {											//if "allow multiple use of same color" is checked
-			secret_value.make(0, (num_colors - 1));						//make it random
-		} else {															//else
-			secret_value.make_u();										//make it random & unique
-		}																//end if
-		secret_value.secret = true; 										//make it secret
-		secret_value.index = i;											//set the index
-		console.log(secret_value);										//log it
-		secret_string.push(secret_value);								//push the object into the "secret" array
-	}																	//end for
-}																		//end function
+		if(unique === false) {										//if "allow multiple use of same color" is checked
+			secret_value.make(0, (num_colors - 1));	//make it random
+		} else {																	//else
+			secret_value.make_u();									//make it random & unique
+		}																					//end if
+		secret_value.secret = true; 							//make it secret
+		secret_value.index = i;										//set the index
+		console.log(secret_value);								//log it
+		secret_string.push(secret_value);					//push the object into the "secret" array
+	}																						//end for
+}																							//end function
 
 
 
@@ -308,11 +308,11 @@ function gen_secret_string() {
 
 function pick_color() {
 
-	el('select').play();                                            		                            //play select sound when color is picked 
-	pick = this.id;														//read the color id
+	el('select').play();                        //play select sound when color is picked 
+	pick = this.id;															//read the color id
 	el('picker').style.backgroundColor = pick;
 	
-	switch(pick) {														//convert each color in its index value 0 - 5
+	switch(pick) {															//convert each color in its index value 0 - 5
 		case 'yellow' :
 			pick = 0;
 			break;
@@ -331,27 +331,27 @@ function pick_color() {
 		case 'cyan' :
 			pick = 5;
 			break;
-	}																	//end switch
+	}																							//end switch
 
 	console.log('picked: ' + pick);
 
-}																		//end function
+}																								//end function
 
 ////////ASSIGNING A COLOR
 
 function assign_color() {
 	
-	el('select').play();												//play select sound when color is picked 
+	el('select').play();													//play select sound when color is picked 
 
-	if(pick === undefined) {												//if a color wasn't picked yet, keep it undefined
+	if(pick === undefined) {											//if a color wasn't picked yet, keep it undefined
 		this.src = 'img/gray.gif';
 		this.color = undefined;
-	} else {																//otherwise
-		this.src = 'img/' + pick + '.gif';									//assign the picked color to the object's src
-		this.color = pick;												//assign the picked color to the object's "color" value
-	}																	//end if
+	} else {																			//otherwise
+		this.src = 'img/' + pick + '.gif';					//assign the picked color to the object's src
+		this.color = pick;													//assign the picked color to the object's "color" value
+	}																							//end if
 
-	xbubble = this.number												//assign this as xbubble
+	xbubble = this.number													//assign this as xbubble
 	console.log('bubble ' + this.number + ' has color ' + this.color);
 }
 
@@ -361,36 +361,36 @@ function gen_current_string() {
 
 	current_string = [];													//empty the player's array
 
-	for(i = 0; i < code_length; i++) {										//create a value for each pick
-		var current_value = Object.create(object);						//create the object
-		current_value.color = cl('bubble' + attempt_index, i).color;		// read the current index's pick color value and put it in the object
-		current_value.matched = false;									//make it not matched
-		current_value.secret = false; 									//make it the player's
-		current_value.index = i;											//set the index
-		console.log(current_value);		 								//log it
-		current_string.push(current_value);								//push the object into the "player's" array
-	}																	//end for
-}																		//end function
+	for(i = 0; i < code_length; i++) {						//create a value for each pick
+		var current_value = Object.create(object);	//create the object
+		current_value.color = cl('bubble' + attempt_index, i).color;// read the current index's pick color value and put it in the object
+		current_value.matched = false;							//make it not matched
+		current_value.secret = false; 							//make it the player's
+		current_value.index = i;										//set the index
+		console.log(current_value);		 							//log it
+		current_string.push(current_value);					//push the object into the "player's" array
+	}																							//end for
+}																								//end function
 
 ////////CHECKING THE CODE
 
 function checkit(){
 
-	gen_current_string();												//generate the player's code
+	gen_current_string();													//generate the player's code
 	var complete = true;													//create a variable to see if all the bubbles are complete
 
-	for(i = 0; i < code_length; i++) {										//for every bubble
-		if(current_string[i].color === undefined) {						//check if has a color
-			complete = false;											//if not, than the row is not complete
-		}																//end if
-	}																	//end for
+	for(i = 0; i < code_length; i++) {						//for every bubble
+		if(current_string[i].color === undefined) {	//check if has a color
+			complete = false;													//if not, than the row is not complete
+		}																						//end if
+	}																							//end for
 
-	if(complete) {														//if the row is complete
-		match();														//go match the codes
-	} else {																//otherwise
-		alert('please complete all fields!'); 							//prompt to complete the fields
-	}																	//end if
-}																		//end function
+	if(complete) {																//if the row is complete
+		match();																		//go match the codes
+	} else {																			//otherwise
+		alert('please complete all fields!'); 			//prompt to complete the fields
+	}																							//end if
+}																								//end function
 
 ////////MATCHING THE CODES
 
@@ -401,18 +401,18 @@ function match(){
 	for(i = 0; i < current_string.length; i++) {
 		console.log("matching bubble " + i + ", color " + current_string[i].color + " with secret " + i + ", color " + secret_string[i].color);
 		
-		if(current_string[i].color === secret_string[i].color) {			//search for positional match first (important!)
-			secret_string[i].matched = true;								//set the secret as matched
+		if(current_string[i].color === secret_string[i].color) {	//search for positional match first (important!)
+			secret_string[i].matched = true;							//set the secret as matched
 			current_string[i].matched = true;							//set the current as matched
-			right_pos.push(true);										//add a true element in the "right position" array
+			right_pos.push(true);													//add a true element in the "right position" array
 			console.log('match, right position');
-		}																//end if
-	}																	//end for
+		}																								//end if
+	}																									//end for
 
 	//SET UP A LOOP THAT MATCHES EACH ELEMENT OF ONE ARRAY TO THE OTHER
 
-	for(i = 0; i < current_string.length; i++) {						//for each of the current string...
-		for(j=0; j < secret_string.length; j++) {						//...and for each of the secret string:
+	for(i = 0; i < current_string.length; i++) {			//for each of the current string...
+		for(j=0; j < secret_string.length; j++) {				//...and for each of the secret string:
 
 			//AVOID MATCHING ELEMENT TWICE
 
@@ -424,32 +424,32 @@ function match(){
 				//RECORD EACH MATCH AND MARK THE MATCHED VALUES
 
 				if(current_string[i].color === secret_string[j].color) {	//if they match
-					secret_string[j].matched = true;						//set the secret as matched
+					secret_string[j].matched = true;					//set the secret as matched
 					current_string[i].matched = true;					//set the current as matched
-					right_col.push(true);								//add them in the "right color" array
+					right_col.push(true);											//add them in the "right color" array
 					console.log('match, right color');
-				}														//end if
-			}															//end if
-		}																//end for
-	}																	//end for
+				}																						//end if
+			}																							//end if
+		}																								//end for
+	}																									//end for
 	
 	console.log('right position: ' + right_pos.length + ', right color: ' + right_col.length)	//log the number of correct positions and correct colors
 
 	//SET UP WINNING CONDITION
 
-	if(right_pos.length === code_length) {									//if all the values are in the right position...
+	if(right_pos.length === code_length) {						//if all the values are in the right position...
 		el('win').play();                                                                				//play winning sound
 		console.log('player wins');
 				
 		//BEST TIME
 		
-		var stopzeit = new Date();  											//measure the end time
-		var diff = Math.floor((stopzeit - startzeit)/1000);					//calculate difference
+		var stopzeit = new Date();  										//measure the end time
+		var diff = Math.floor((stopzeit - startzeit)/1000);	//calculate difference
 		
-		if(best_time === undefined || diff < best_time) {						//check if best time
-			best_time = diff;												//set new best time
+		if(best_time === undefined || diff < best_time) {		//check if best time
+			best_time = diff;															//set new best time
 			var thisbesttime = true;
-		}																	//end if
+		}																								//end if
 		
 		//HIGH SCORE
 		
@@ -462,28 +462,28 @@ function match(){
 			el('highscore').innerHTML = "NEW HIGH SCORE!";
 		}
 		 
-		 el('info').innerHTML = "Score: " + (attempt_index + 1) + " attempts<br>Best score: " + high_score + " attempts<br>Time: " + diff + " seconds<br>Best time: "  + best_time + " seconds<br>";	//report score
-		endgame();														//game over!
-		alert('you win');												//congratulations!
+		 el('info').innerHTML = "Score: " + (attempt_index + 1) + " attempts<br>Best score: " + high_score + " attempts<br>Time: " + diff + " seconds<br>Best time: "  + best_time + " seconds<br>";//report score
+		endgame();																			//game over!
+		alert('you win');																//congratulations!
 
-	} else {																//otherwise
-		feedback();														//go ahead
-	}																	//end if
-}																		//end function
+	} else {																					//otherwise
+		feedback();																			//go ahead
+	}																									//end if
+}																										//end function
 
 ////////GIVING FEEDBACK
 
 function feedback() {
 
-	for(i = 0; i < right_pos.length; i++) {								//for each right color in the right position
-		cl('feed' + attempt_index, i).src = 'img/feedblack.gif';			//put a black src in one of the feeds
+	for(i = 0; i < right_pos.length; i++) {						//for each right color in the right position
+		cl('feed' + attempt_index, i).src = 'img/feedblack.gif';//put a black src in one of the feeds
 	}																	//end for
 	
-	for(j = 0; j < right_col.length; j++) {								//for each right color NOT in the right position
-		cl('feed' + attempt_index, j + i).src = 'img/feedwhite.gif';		//put a white src in one of the feeds, but don't overwite i.
+	for(j = 0; j < right_col.length; j++) {						//for each right color NOT in the right position
+		cl('feed' + attempt_index, j + i).src = 'img/feedwhite.gif';//put a white src in one of the feeds, but don't overwite i.
 	}
 
-	for (i = 0 ; i < code_length; i++) {									//for every class "bubble" of the current row
+	for (i = 0 ; i < code_length; i++) {							//for every class "bubble" of the current row
 		cl('bubble' + attempt_index, i).removeEventListener('click', assign_color);	
 		//remove the event listener
 		cl('bubble' + attempt_index, i).removeEventListener('drop', drop);
@@ -492,23 +492,23 @@ function feedback() {
 	
 	//MEMORY MODE
 		
-	if(memory) {															//if memory game
-		var hide = random(0, code_length);								//random: how many colors to hide
+	if(memory) {																			//if memory game
+		var hide = random(0, code_length);							//random: how many colors to hide
 		
 		for(i = 0; i < hide; i++) {
-			var hidethis = random(0, (code_length -1));					//choose a random bubble
+			var hidethis = random(0, (code_length -1));		//choose a random bubble
 			cl('bubble' + (attempt_index ), hidethis).src = 'img/question.gif';//hide it
-		}																//end if															
-	}																	//end for	
+		}																								//end if															
+	}																									//end for	
 	
 	//SET UP LOSING CONDITION
 
-	if(attempt_index === max_attempts - 1) {								//if all the attempts are gone...
-		el('lose').play();												//play sound
+	if(attempt_index === max_attempts - 1) {					//if all the attempts are gone...
+		el('lose').play();															//play sound
 		console.log('player loses');
-		endgame();					//game over.
-		alert('you lose!');				//I'm sorry
-	} else {						//otherwise
+		endgame();																			//game over.
+		alert('you lose!');															//I'm sorry
+	} else {																					//otherwise
 		
 		//SET UP NEW ATTEMPT
 		
