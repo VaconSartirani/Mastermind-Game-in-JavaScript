@@ -1,0 +1,146 @@
+/*
+MASTERMIND GAME
+Abschlußprojekt by Yaiza Camps and Daniele Sartirani
+teachers: Elisabeth Hronek and Klaus Domass
+CIMDATA JavaScript Kurs, March 2017
+CSS FILE
+						 _                      _           _
+						| |                    (_)         | |
+	 _ __ ___   __ _ ___| |_ ___ _ __ _ __ ___  _ _ __   __| |
+	| '_ ` _ \ / _` / __| __/ _ \ '__| '_ ` _ \| | '_ \ / _` |
+	| | | | | | (_| \__ \ ||  __/ |  | | | | | | | | | | (_| |
+	|_| |_| |_|\__,_|___/\__\___|_|  |_| |_| |_|_|_| |_|\__,_|
+
+*/
+
+* {
+  box-sizing:border-box;
+}
+#settings {
+  display:block;
+  margin: auto;
+  float:left;
+}
+
+#howto {
+	display:none;
+	width:300px;
+	float:left;
+}
+
+#info, #highscore{
+	display:block;
+	font-style:italic;
+	text-align:center;
+}
+
+#highscore {
+	font-size:200%;
+	font-color:green;
+}
+
+
+#wrapper {
+  position:absolute;
+  left:400px;
+  display:none;
+  width:320px;
+  height:auto;
+  background-color:#e1e1e1;
+  margin:auto;
+  border-radius:20px;
+  box-shadow:black 2px 2px 10px;
+  margin-bottom:100px;
+}
+
+#code {
+  display:block;
+  width:100%;
+  height:62px;
+  float:left;
+  background-color:#acacac;
+  border-radius:20px;
+}
+
+#game {
+  background-color:#acacac;
+  border-radius: 20px 20px 0px 0px;
+}
+
+
+.row {
+  width:100%;
+  display:block;
+  height:60px;;
+  clear:both;
+  border:solid gray 1px;
+  background-color:#e1e1e1;
+  border-radius:20px;
+}
+
+.question, .bubble {
+  float:left;
+  width:40px;
+  margin:7px 10px 10px;
+  border-radius:50%;
+  box-shadow:black 2px 2px 10px;
+}
+
+.feedback {
+  margin-left:10px;
+  margin-top:7px;
+  width:50px;
+  float:left;
+
+}
+
+.feed {
+  margin:3px;
+  border-radius:100%;
+}
+
+#colors {
+  display:flex;
+  clear:both;
+  height:50px;
+  padding:7px;
+  background-color:#acacac;
+}
+
+.question, .color {
+	display:none;
+}
+
+.color {
+  position:relative;
+	float:left;
+	margin:auto;
+  top: 0px;
+}
+
+#inputattempts {
+	width:30px;
+}
+
+#buttons {
+	display:flex;
+}
+
+.button {
+	display:block;
+	width:100px;
+	margin:auto;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+#picker {
+	position:relative;
+	right: 5px;
+	display:block;
+	float:right;
+	width:35px;
+	height:35px;
+	margin: 10px;
+	background-color: gray;
+}
